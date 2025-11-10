@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD MLOps
 
 on:
   push:
@@ -15,16 +15,16 @@ jobs:
         python-version: [3.11]
 
     steps:
-      # Checkout repo
+      # Checkout repository
       - uses: actions/checkout@v3
 
       # Setup Python
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Cache pip
+      # Cache pip packages
       - name: Cache pip
         uses: actions/cache@v3
         with:
@@ -41,21 +41,25 @@ jobs:
       - name: Lint
         run: make lint
 
-      # Run tests
-      - name: Test
-        run: make test
-
       # Format code
       - name: Format
         run: make format
 
-      # Upload coverage and test reports
+      # Run tests
+      - name: Run tests
+        run: make test
+
+      # Upload coverage and test reports using upload-artifact v4
       - name: Upload test reports
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4
         with:
           name: test-reports
-          path: ./htmlcov  # ou le dossier où pytest-cov génère le coverage
+          path: ./htmlcov   # ajuster selon le dossier coverage pytest
 
-      # Deploy
+      # Check GPU availability
+      - name: Check GPU
+        run: make checkgpu
+
+      # Deploy placeholder
       - name: Deploy
         run: make deploy
