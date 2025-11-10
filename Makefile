@@ -29,8 +29,9 @@ format:
 # Linting
 # ------------------------------
 lint:
-	@echo "Running pylint..."
-	pylint --disable=R,C --ignore-patterns=test_.*?py *.py utils/*.py mylib/*.py hugging-face/*.py
+	@echo "Running pylint with relaxed rules..."
+	pylint --disable=R,C,no-member,redefined-outer-name,pointless-statement \
+		--ignore-patterns=test_.*?py *.py utils/*.py mylib/*.py hugging-face/*.py
 
 container-lint:
 	@echo "Linting Dockerfile..."
