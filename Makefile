@@ -1,30 +1,62 @@
+# Makefile for MLOps-template
+
+# ------------------------------
+# Installation
+# ------------------------------
 install:
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
-	#force install latest whisper
-	pip install --upgrade --no-deps --force-reinstall git+https://github.com/openai/whisper.git
+	@echo "Upgrading pip, setuptools, and wheel..."
+	pip install --upgrade pip setuptools wheel
+	@echo "Installing dependencies from requirements.txt..."
+	pip install -r requirements.txt
+	@echo "Installing latest Whisper from GitHub..."
+	pip install --upgrade --no-deps --force-reinstall git+https://github.com/openai/whisper.git@main
+
+# ------------------------------
+# Testing
+# ------------------------------
 test:
+	@echo "Running tests with coverage..."
 	python -m pytest -vv --cov=main --cov=mylib test_*.py
 
-format:	
-	black *.py hugging-face/zero_shot_classification.py hugging-face/hf_whisper.py
+# ------------------------------
+# Code formatting
+# ------------------------------
+format:
+	@echo "Formatting Python code with black..."
+	black *.py utils/*.py hugging-face/*.py
 
+# ------------------------------
+# Linting
+# ------------------------------
 lint:
-	pylint --disable=R,C --ignore-patterns=test_.*?py *.py mylib/*.py\
-		 hugging-face/zero_shot_classification.py hugging-face/hf_whisper.py
+	@echo "Running pylint..."
+	pylint --disable=R,C --ignore-patterns=test_.*?py *.py utils/*.py mylib/*.py hugging-face/*.py
 
 container-lint:
+	@echo "Linting Dockerfile..."
 	docker run --rm -i hadolint/hadolint < Dockerfile
 
+# ------------------------------
+# GPU verification
+# ------------------------------
 checkgpu:
-	echo "Checking GPU for PyTorch"
-	python utils/verify_pytorch.py
-	echo "Checking GPU for Tensorflow"
-	python utils/verify_tf.py
+	@echo "Checking GPU for PyTorch..."
+	python utils/verify_cuda_pytorch.py
+	@echo "Checking GPU for TensorFlow..."
+	python utils/quickstart_tf2.py
 
+# ------------------------------
+# Refactor (format + lint)
+# ------------------------------
 refactor: format lint
 
+# ------------------------------
+# Deployment placeholder
+# ------------------------------
 deploy:
-	#deploy goes here
-		
+	@echo "Deployment steps go here..."
+
+# ------------------------------
+# All-in-one
+# ------------------------------
 all: install lint test format deploy
