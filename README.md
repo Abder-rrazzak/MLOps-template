@@ -1,10 +1,9 @@
 
-
 # MLOps Template | GPU-Ready Python Environment
 
 ## 1. Overview
 
-This repository provides a **production-ready MLOps template** optimized for GPU and Python 3.11. It is designed for machine learning and deep learning projects using **PyTorch**, **TensorFlow**, and **Hugging Face**, and includes CI/CD pipelines, Docker integration, and virtual environment management.
+This repository provides a **production-ready MLOps template** optimized for GPU and Python 3.11. It is designed for machine learning and deep learning projects using **PyTorch**, **TensorFlow**, and **Hugging Face**, including CI/CD pipelines, Docker integration, and virtual environment management.
 
 Key benefits:
 
@@ -50,27 +49,52 @@ nvidia-smi -l 1
 
 ---
 
-## 3. Usage Examples
+## 3. Project Structure
 
-### 3.1 Zero-Shot Classification
+```
+MLOps-template/
+│
+├─ hugging-face/                 # Hugging Face scripts
+│  ├─ hf_fine_tune_hello_world.py
+│  └─ zero_shot_classification.py
+│
+├─ utils/                        # Utility scripts
+│  ├─ verify_cuda_pytorch.py
+│  ├─ kw_extract.py
+│  └─ quickstart_tf2.py
+│
+├─ tests/                        # Unit tests for code
+│  └─ test_example.py
+│
+├─ Makefile                       # Automation tasks
+├─ Dockerfile                      # Docker configuration
+├─ requirements.txt               # Python dependencies
+└─ README.md                      # This file
+```
+
+---
+
+## 4. Usage Examples
+
+### 4.1 Zero-Shot Classification
 
 ```bash
 python hugging-face/zero_shot_classification.py classify
 ```
 
-### 3.2 Keyword Extraction with YAKE
+### 4.2 Keyword Extraction with YAKE
 
 ```bash
 python utils/kw_extract.py
 ```
 
-### 3.3 Hugging Face Fine-Tuning
+### 4.3 Hugging Face Fine-Tuning
 
 ```bash
 python hugging-face/hf_fine_tune_hello_world.py
 ```
 
-### 3.4 BentoML Quickstart
+### 4.4 BentoML Quickstart
 
 ```bash
 docker run -it --rm -p 8888:8888 -p 3000:3000 -p 3001:3001 bentoml/quickstart:latest
@@ -78,9 +102,9 @@ docker run -it --rm -p 8888:8888 -p 3000:3000 -p 3001:3001 bentoml/quickstart:la
 
 ---
 
-## 4. Docker & GPU Integration
+## 5. Docker & GPU Integration
 
-### 4.1 Run TensorFlow GPU Container
+### 5.1 Run TensorFlow GPU Container
 
 ```bash
 docker run --gpus all -it --rm tensorflow/tensorflow:latest-gpu /bin/bash
@@ -89,7 +113,7 @@ cd /tmp && make install
 python utils/quickstart_tf2.py
 ```
 
-### 4.2 Deploy TensorFlow Serving Model
+### 5.2 Deploy TensorFlow Serving Model
 
 ```bash
 docker run -t --rm -p 8501:8501 \
@@ -99,18 +123,44 @@ docker run -t --rm -p 8501:8501 \
 
 ---
 
-## 5. Features
+## 6. Features
 
 * CI/CD integration via GitHub Actions
 * Automated ML pipelines with Makefile
 * GPU-enabled workflows for PyTorch and TensorFlow
 * Interactive experimentation with Jupyter and IPython
-* Linting and unit tests included
+* Linting and testing included
 * GitHub Copilot integration
 
 ---
 
-## 6. References
+## 7. Contributing Guidelines
+
+We welcome contributions to improve this template.
+
+1. Fork the repository and create a new branch for your feature:
+
+```bash
+git checkout -b feature-name
+```
+
+2. Commit your changes with clear messages:
+
+```bash
+git commit -m "Add new feature or fix"
+```
+
+3. Push your branch and create a Pull Request:
+
+```bash
+git push origin feature-name
+```
+
+4. Ensure all tests pass and code is properly linted.
+
+---
+
+## 8. References
 
 * TensorFlow GPU Documentation: [https://www.tensorflow.org/resources/recommendation-systems](https://www.tensorflow.org/resources/recommendation-systems)
 * Practical MLOps: Operationalizing ML Models: [https://www.manning.com/books/practical-mlops](https://www.manning.com/books/practical-mlops)
@@ -118,9 +168,8 @@ docker run -t --rm -p 8501:8501 \
 
 ---
 
-## 7. Goals
+## 9. Goals
 
 * Provide a fast, production-ready environment for ML/DL projects
 * Standardize MLOps workflows for reproducibility and scalability
 * Serve as a learning template for engineers, students, and hobbyists
-
