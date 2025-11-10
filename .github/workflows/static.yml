@@ -27,7 +27,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Setup GitHub Pages
+      # Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v2
 
@@ -35,7 +35,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: '.'   # Upload the whole repository or specify the folder to deploy
+          path: '.'   # Modifier si tu veux déployer uniquement un sous-dossier (ex: ./docs)
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
