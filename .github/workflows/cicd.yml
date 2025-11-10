@@ -1,23 +1,61 @@
 name: CI
+
 on:
   push:
-    branches: [ "GPU" ]
+    branches: ["GPU"]
   pull_request:
-    branches: [ "GPU" ]
+    branches: ["GPU"]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+
     steps:
+      # Checkout repo
       - uses: actions/checkout@v3
-      - name: install packages
+
+      # Setup Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Cache pip
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Install dependencies
+      - name: Install packages
         run: make install
-      - name: lint
+
+      # Lint code
+      - name: Lint
         run: make lint
-      - name: test
+
+      # Run tests
+      - name: Test
         run: make test
-      - name: format
+
+      # Format code
+      - name: Format
         run: make format
-      - name: deploy
+
+      # Upload coverage and test reports
+      - name: Upload test reports
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: test-reports
+          path: ./htmlcov  # ou le dossier où pytest-cov génère le coverage
+
+      # Deploy
+      - name: Deploy
         run: make deploy
