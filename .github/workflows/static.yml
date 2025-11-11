@@ -25,19 +25,19 @@ jobs:
     steps:
       # Checkout repository
       - name: Checkout repository
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
 
       # Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
 
-      # Upload artifact for Pages (replaces v1)
+      # Upload artifact for Pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: '.'   # Change this if your build output is elsewhere
+          path: '.'   # Change if needed (ex: ./docs or dist)
 
-      # Deploy to GitHub Pages (replaces v1)
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
