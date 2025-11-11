@@ -15,51 +15,35 @@ jobs:
         python-version: [3.11]
 
     steps:
-      # Checkout repository
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # Setup Python
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      # Cache pip packages
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Install dependencies
       - name: Install packages
         run: make install
 
-      # Lint code
       - name: Lint
         run: make lint
 
-      # Format code
       - name: Format
         run: make format
 
-      # Run tests
       - name: Run tests
         run: make test
 
-      # Upload coverage and test reports using upload-artifact v4
-      - name: Upload test reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-reports
-          path: ./htmlcov   # ajuster selon le dossier coverage pytest
-
-      # Check GPU availability
       - name: Check GPU
         run: make checkgpu
 
-      # Deploy placeholder
       - name: Deploy
         run: make deploy
